@@ -6,7 +6,9 @@
 
 This script allows for the automatic hibernation of Xubuntu 15.10 using XFCE after a pre-defined amount of time. This solves many of the issues related to this procedure including restoring the network connection after wakeup and locking the screen.
 
-This script must be run with super-user priviledges. 3 Variables may be changed to customize the script: my_username, sleepytime (length of time in minutes before hibernate) and wifi_driver (name of wifi driver – can be found by running $lshw | grep wireless | grep driver). To run: $chmod +x xu-autohibernate.sh; /xu-autohibernate.sh
+This script must be run with super-user priviledges. 3 Variables may be changed to customize the script: my_username, sleepytime (length of time in minutes before hibernate) and wifi_driver (name of wifi driver – can be found by running $lshw | grep wireless | grep driver). 
+
+To run: $chmod +x xu-autohibernate.sh; ./xu-autohibernate.sh
 
 First the script installs gnome-screensaver and xautolock. Xautolock will be inserted into the session and startup options in XFCE and will call a locking and hibernation script at /home/username/xautolock.sh after the number of minutes you have chosen. This script calls gnome-screensaver-command -l (locking the screen) and sudo pm-hibernate. Visudo is also updated to allow your local user to run this command. 
 
