@@ -106,7 +106,7 @@ echo "$my_username ALL=NOPASSWD:/usr/sbin/pm-hibernate" >> /etc/sudoers
 
 # now set up wifi recovery and unload modules
 
-echo "Now installing wifi wakeup recovery and unload modules"
+echo "Now installing wifi wakeup recovery."
 
 cat <<EOF > /etc/pm/sleep.d/10_restart_network_manager
 #!/bin/sh
@@ -119,7 +119,7 @@ EOF
 
 chmod +x /etc/pm/sleep.d/10_restart_network_manager
 
-echo "Install optional /etc/pm/config.d/unload_modules with with wifi driver: $wifi_driver?"
+echo "Install optional /etc/pm/config.d/unload_modules with wifi driver: $wifi_driver?"
 echo "Continue? (y/n)"
 read somevar
 
