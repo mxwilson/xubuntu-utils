@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# xu-autohibernate.sh
+# xu-autohibernate.sh (0.1)
 # xubuntu (15.10) auto-hibernate script
 # License GPLv3+: GNU GPL version 3 or later: http://gnu.org/licenses/gpl.html
 # No warranty. Software provided as is.
@@ -14,7 +14,7 @@ my_username="username"
 sleepytime=55 
 
 # optional wifi drive name for suspend modules
-wifi_driver="wifidrivename"
+wifi_driver="wifidrivername"
 
 # must run as root
 
@@ -27,28 +27,29 @@ fi
 echo "Starting hibernate script for Xubuntu"
 echo "Local user: $my_username"
 
-echo "Continue? (y/n)"
-read somevar
+read -p "Continue? (y/n)" somevar
 
-if [ "$somevar" != "y" ] || [ ! "$somevar" != "yes" ]
-	then
-	echo "Bye"
-	exit
-fi
+case "$somevar" in
+        y|Y )
+                ;;
+        * )
+                echo "Bye"; exit;;
+esac
 
 unset somevar
 
 # install the programs i need
 
 echo "Installing gnome-screensaver-command, xautolock"
-echo "Continue? (y/n)"
-read somevar
 
-if [ "$somevar" != "y" ] || [ ! "$somevar" != "yes" ]
-	then
-	echo "Bye"
-	exit
-fi
+read -p "Continue? (y/n)" somevar
+
+case "$somevar" in
+        y|Y )
+                ;;
+        * )
+                echo "Bye"; exit;;
+esac
 
 unset somevar
 
@@ -120,14 +121,15 @@ EOF
 chmod +x /etc/pm/sleep.d/10_restart_network_manager
 
 echo "Install optional /etc/pm/config.d/unload_modules with wifi driver: $wifi_driver?"
-echo "Continue? (y/n)"
-read somevar
 
-if [ "$somevar" != "y" ] || [ ! "$somevar" != "yes" ]
-	then
-	echo "Bye"
-	exit
-fi
+read -p "Continue? (y/n)" somevar
+
+case "$somevar" in
+        y|Y )
+                ;;
+        * )
+                echo "Bye"; exit;;
+esac
 
 cat <<EOF > /etc/pm/config.d/unload_modules
 SUSPEND_MODULES="\$SUSPEND_MODULES $wifi_driver"
