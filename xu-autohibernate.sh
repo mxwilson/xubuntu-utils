@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # xu-autohibernate.sh (0.1)
-# xubuntu (15.10) auto-hibernate script
+# xubuntu (15.10/16.10) auto-hibernate script
 # License GPLv3+: GNU GPL version 3 or later: http://gnu.org/licenses/gpl.html
 # No warranty. Software provided as is.
-# Copyright Matthew Wilson, 2015.
+# Copyright Matthew Wilson, 2015-16.
 # https://github.com/mxwilson
 
 # define the local user
@@ -128,7 +128,7 @@ case "$somevar" in
         y|Y )
                 ;;
         * )
-                echo "Bye"; exit;;
+                echo "Done!"; exit;;
 esac
 
 cat <<EOF > /etc/pm/config.d/unload_modules
