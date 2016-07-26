@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# xu-autohibernate.sh (0.1)
-# xubuntu (15.10/16.10) auto-hibernate script
+# xu-autohibernate.sh (0.2)
+# xubuntu (15/16) auto-hibernate script
 # License GPLv3+: GNU GPL version 3 or later: http://gnu.org/licenses/gpl.html
 # No warranty. Software provided as is.
 # Copyright Matthew Wilson, 2015-16.
 # https://github.com/mxwilson
+
+
+# CHANGE THESE TWO VARIABLES BELOW
 
 # define the local user
 my_username="username"
 
 # minutes of inactivity until hibernation (used to control xautolock)
 sleepytime=55 
-
-# optional wifi drive name for suspend modules
-wifi_driver="wifidrivername"
 
 # must run as root
 
@@ -107,7 +107,7 @@ echo "$my_username ALL=NOPASSWD:/usr/sbin/pm-hibernate" >> /etc/sudoers
 
 # now set up wifi recovery and unload modules
 
-echo "Now installing wifi wakeup recovery."
+echo "Now installing network wakeup recovery to restart network-manager.service"
 
 cat <<EOF > /etc/pm/sleep.d/10_restart_network_manager
 #!/bin/sh
@@ -120,20 +120,31 @@ EOF
 
 chmod +x /etc/pm/sleep.d/10_restart_network_manager
 
-echo "Install optional /etc/pm/config.d/unload_modules with wifi driver: $wifi_driver?"
+# unload modules
 
-read -p "Continue? (y/n)" somevar
+# get name of wifi driver
 
-case "$somevar" in
-        y|Y )
-                ;;
-        * )
-                echo "Done!"; exit;;
-esac
+kk=$(lshw | grep wireless | grep driver | cut -f3  -d '=' | awk '{print $1}')
+
+if [ -z "$kk" ]; then
+	echo "No wireless card found. Will not install unload_modules."
+	echo "Done!"; exit;
+else
+	echo "Install optional /etc/pm/config.d/unload_modules with wifi driver: $kk?"
+	read -p "Continue? (y/n)" somevar
+
+	case "$somevar" in
+        	y|Y )
+                	;;
+        	* )
+        		echo "Done! Unload_modules not installed."; exit;;
+	esac
 
 cat <<EOF > /etc/pm/config.d/unload_modules
-SUSPEND_MODULES="\$SUSPEND_MODULES $wifi_driver"
+SUSPEND_MODULES="\$SUSPEND_MODULES $kk"
 EOF
+
+fi
 
 echo "Done!"
 exit
